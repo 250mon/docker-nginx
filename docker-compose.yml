@@ -1,0 +1,20 @@
+services:
+  nginx:
+    build: .
+    container_name: dev-nginx
+    ports:
+      - "8080:80"
+    networks:
+      - my_shared_proxy_net
+    volumes:
+      # Mount local conf.d directory to container config directory
+      - ./conf.d:/etc/nginx/conf.d:ro
+      - ./proxy_params:/etc/nginx/proxy_params:ro
+      - ./proxy_params_ws:/etc/nginx/proxy_params_ws:ro
+      # Optionally mount static site files
+      # - ./html:/usr/share/nginx/html:ro
+    restart: always
+
+networks:
+  my_shared_proxy_net:
+    external: true
