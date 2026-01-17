@@ -1,31 +1,36 @@
 services:
   nginx:
     build: .
-    container_name: dev-nginx
+    image: lambki/danaul-nginx:latest
+    container_name: danaul-nginx
     ports:
       - "8080:80"
     networks:
-      - my_shared_proxy_net
+      - my-shared-proxy-net
     environment:
       # IP addresses for backend services
       - AUTH_APP_IP=${AUTH_APP_IP}
       - AUTH_APP_PORT=${AUTH_APP_PORT}
       - INVENTORY_APP_IP=${INVENTORY_APP_IP}
       - INVENTORY_APP_PORT=${INVENTORY_APP_PORT}
-      - PRESCRIPTION_APP_IP=${PRESCRIPTION_APP_IP}
-      - PRESCRIPTION_APP_PORT=${PRESCRIPTION_APP_PORT}
-      - EMAILSENDER_FRONTEND_IP=${EMAILSENDER_FRONTEND_IP}
-      - EMAILSENDER_FRONTEND_PORT=${EMAILSENDER_FRONTEND_PORT}
-      - EMAILSENDER_API_IP=${EMAILSENDER_API_IP}
-      - EMAILSENDER_API_PORT=${EMAILSENDER_API_PORT}
-    volumes:
+      - DOSUSCHEDULER_APP_IP=${DOSUSCHEDULER_APP_IP}
+      - DOSUSCHEDULER_APP_PORT=${DOSUSCHEDULER_APP_PORT}
+      # - PRESCRIPTION_APP_IP=${PRESCRIPTION_APP_IP}
+      # - PRESCRIPTION_APP_PORT=${PRESCRIPTION_APP_PORT}
+      # - EMAILSENDER_FRONTEND_IP=${EMAILSENDER_FRONTEND_IP}
+      # - EMAILSENDER_FRONTEND_PORT=${EMAILSENDER_FRONTEND_PORT}
+      # - EMAILSENDER_API_IP=${EMAILSENDER_API_IP}
+      # - EMAILSENDER_API_PORT=${EMAILSENDER_API_PORT}
+    # volumes:
+      # Mount conf.d directory
+      # - ./conf.d:/etc/nginx/conf.d:ro # commented out because we are using templates
       # Mount proxy params files
-      - ./proxy_params:/etc/nginx/proxy_params:ro
-      - ./proxy_params_ws:/etc/nginx/proxy_params_ws:ro
+      # - ./proxy_params:/etc/nginx/proxy_params:ro
+      # - ./proxy_params_ws:/etc/nginx/proxy_params_ws:ro
       # Optionally mount static site files
       # - ./html:/usr/share/nginx/html:ro
     restart: always
 
 networks:
-  my_shared_proxy_net:
+  my-shared-proxy-net:
     external: true
