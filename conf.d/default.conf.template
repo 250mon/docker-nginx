@@ -10,6 +10,14 @@ upstream inventory_app {
     server ${INVENTORY_APP_IP}:${INVENTORY_APP_PORT};
 }
 
+upstream prescription_app {
+    server ${PRESCRIPTION_APP_IP}:${PRESCRIPTION_APP_PORT};
+}
+
+upstream emailsender_app {
+    server ${EMAILSENDER_APP_IP}:${EMAILSENDER_APP_PORT};
+}
+
 map $http_upgrade $connection_upgrade {
     default upgrade;
     '' close;
@@ -26,8 +34,6 @@ server {
         proxy_pass http://auth_app;
 
         proxy_http_version 1.1;
-        # proxy_set_header Host $host;
-        proxy_set_header Host $http_host;  # keeps :8080 port
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
 
@@ -47,8 +53,6 @@ server {
         proxy_pass http://dosuscheduler_app;
 
         proxy_http_version 1.1;
-        # proxy_set_header Host $host;
-        proxy_set_header Host $http_host;  # keeps :8080 port
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
 
@@ -68,8 +72,6 @@ server {
         proxy_pass http://inventory_app;
 
         proxy_http_version 1.1;
-        # proxy_set_header Host $host;
-        proxy_set_header Host $http_host;  # keeps :8080 port
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
 
@@ -78,3 +80,41 @@ server {
     }
 }
 
+
+server {
+    listen 80;
+    server_name prescription.danaul.ai;
+    
+    # Resolver for Docker's internal DNS (127.0.0.11)
+    resolver 127.0.0.11 valid=10s;
+
+    location / {
+        proxy_pass http://prescription_app;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+
+        proxy_read_timeout 60s;
+        proxy_send_timeout 60s;
+    }
+}
+
+server {
+    listen 80;
+    server_name emailsender.danaul.ai;
+    
+    # Resolver for Docker's internal DNS (127.0.0.11)
+    resolver 127.0.0.11 valid=10s;
+
+    location / {
+        proxy_pass http://emailsender_app;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+
+        proxy_read_timeout 60s;
+        proxy_send_timeout 60s;
+    }
+}
