@@ -6,7 +6,7 @@ FROM nginx:alpine
 
 # Copy nginx config template (will be processed by nginx entrypoint)
 # Templates in /etc/nginx/templates/ are automatically processed and copied to /etc/nginx/conf.d/
-COPY conf.d/default.conf.template /etc/nginx/templates/default.conf.template
+# COPY conf.d/default.conf.template /etc/nginx/templates/default.conf.template
 
 
 # Copy static web files if any (optional)
