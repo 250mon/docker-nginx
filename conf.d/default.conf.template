@@ -34,7 +34,7 @@ server {
         proxy_pass http://auth_app;
 
         proxy_http_version 1.1;
-        proxy_http_header Host $host;
+	proxy_set_header Host $host;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
 
@@ -54,7 +54,7 @@ server {
         proxy_pass http://dosuscheduler_app;
 
         proxy_http_version 1.1;
-        proxy_http_header Host $host;
+	proxy_set_header Host $host;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
 
@@ -74,7 +74,7 @@ server {
         proxy_pass http://inventory_app;
 
         proxy_http_version 1.1;
-        proxy_http_header Host $host;
+	proxy_set_header Host $host;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
 
@@ -95,7 +95,7 @@ server {
         proxy_pass http://prescription_app;
 
         proxy_http_version 1.1;
-        proxy_http_header Host $host;
+	proxy_set_header Host $host;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
 
@@ -115,7 +115,7 @@ server {
 #        proxy_pass http://emailsender_app;
 #
 #        proxy_http_version 1.1;
-#        proxy_http_header Host $host;
+#        proxy_set_header Host $host;
 #        proxy_set_header Upgrade $http_upgrade;
 #        proxy_set_header Connection $connection_upgrade;
 #
